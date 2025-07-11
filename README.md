@@ -43,9 +43,7 @@ Ricerca e sviluppo a cura di [Vincenzo Colaprice](https://www.sissco.it/soci/col
 
 ## 📁 Struttura del repository
 
-📁 odonfoibe/
-├── index.html
-├── README.md
-├── data/
-│ ├── vie.geojson
-│ └── regioni.geojson
+- `index.html`
+- `data/`
+  - `vie.geojson`
+  - `regioni.geojson`
