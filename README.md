@@ -16,8 +16,7 @@ Il file `vie.geojson` contiene:
 - comune (estratto automaticamente);
 - coordinate geografiche.
 
-Le coordinate e gli indirizzi sono stati estratti da OpenStreetMap. Il dataset è stato reso disponibile e scaricabile in formato CSV su Zenodo 🔗 [https://zenodo.org/records/15649794](https://doi.org/10.5281/zenodo.15649794)
-
+Le coordinate e gli indirizzi sono stati estratti da OpenStreetMap. Il dataset è stato reso disponibile e scaricabile in formato CSV su Zenodo 🔗 [https://doi.org/10.5281/zenodo.15647533](https://doi.org/10.5281/zenodo.15647533).
 
 ---
 
