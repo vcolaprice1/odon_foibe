@@ -1,9 +1,37 @@
 # 🗺️ Mappa degli odonimi relativi ai massacri delle foibe in Italia
 
-Questa mappa interattiva consente di esplorare la diffusione e localizzazione degli odonimi dedicati ai cosiddetti “martiri delle foibe” nel territorio italiano. La toponomastica è uno strumento centrale nella costruzione della memoria pubblica e, nel caso delle foibe, ha assunto un ruolo simbolico già prima dell’istituzione del Giorno del Ricordo nel 2004.
+Questa mappa interattiva consente di esplorare la diffusione e localizzazione nel territorio italiano degli odonimi relativi ai massacri delle foibe. La toponomastica è uno strumento centrale nella costruzione della memoria pubblica e nel caso della memoria delle foibe ha assunto un ruolo rilevante fin da prima dell’istituzione del Giorno del Ricordo nel 2004.
+
+La rilevazione è stata effettuata in data 4 gennaio 2025.
 
 📍 La mappa è consultabile qui:  
 🔗 [https://vcolaprice1.github.io/odon_foibe/](https://vcolaprice1.github.io/odon_foibe/)
+
+## 📊 Distribuzione regionale degli odonimi legati alle foibe
+
+| Regione                 | N. odonimi |
+|-------------------------|------------|
+| Lombardia               | 61         |
+| Veneto                  | 57         |
+| Puglia                  | 31         |
+| Emilia-Romagna          | 28         |
+| Piemonte                | 24         |
+| Lazio                   | 22         |
+| Sicilia                 | 20         |
+| Toscana                 | 17         |
+| Marche                  | 14         |
+| Friuli-Venezia Giulia   | 12         |
+| Umbria                  | 12         |
+| Abruzzo                 | 11         |
+| Liguria                 | 7          |
+| Sardegna                | 7          |
+| Campania                | 6          |
+| Calabria                | 3          |
+| Trentino-Alto Adige     | 3          |
+| Basilicata              | 0          |
+| Molise                  | 0          |
+| Valle d'Aosta           | 0          |
+| **Totale**              | **335**    |
 
 ---
 
