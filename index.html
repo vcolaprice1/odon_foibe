@@ -41,24 +41,7 @@
     };
     info.addTo(map);
 
-    // Contorni regioni
-    fetch('data/regioni.geojson')
-        .then(response => {
-            if (!response.ok) throw new Error("Errore nel caricamento regioni.geojson");
-            return response.json();
-        })
-        .then(data => {
-            L.geoJSON(data, {
-                style: {
-                    color: '#5e5e5e',
-                    weight: 1,
-                    fillOpacity: 0
-                }
-            }).addTo(map);
-        })
-        .catch(err => console.error("Errore caricamento regioni:", err));
-
-    // Punti delle vie
+        // Punti delle vie
 fetch('data/vie.geojson')
             .then(response => response.json())
             .then(data => {
@@ -81,6 +64,23 @@ fetch('data/vie.geojson')
             }).addTo(map);
         })
         .catch(err => console.error("Errore caricamento vie:", err));
+        
+        // Contorni regioni
+    fetch('data/regioni.geojson')
+        .then(response => {
+            if (!response.ok) throw new Error("Errore nel caricamento regioni.geojson");
+            return response.json();
+        })
+        .then(data => {
+            L.geoJSON(data, {
+                style: {
+                    color: '#5e5e5e',
+                    weight: 1,
+                    fillOpacity: 0
+                }
+            }).addTo(map);
+        })
+        .catch(err => console.error("Errore caricamento regioni:", err));
 </script>
 </body>
 </html>
