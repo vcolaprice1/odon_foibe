@@ -3,7 +3,7 @@
 Questa mappa interattiva consente di esplorare la diffusione e localizzazione degli odonimi dedicati ai cosiddetti “martiri delle foibe” nel territorio italiano. La toponomastica è uno strumento centrale nella costruzione della memoria pubblica e, nel caso delle foibe, ha assunto un ruolo simbolico già prima dell’istituzione del Giorno del Ricordo nel 2004.
 
 📍 La mappa è consultabile qui:  
-🔗 [https://vcolaprice1.github.io/odonfoibe/](https://vcolaprice1.github.io/odonfoibe/)
+🔗 [https://vcolaprice1.github.io/odon_foibe/](https://vcolaprice1.github.io/odon_foibe/)
 
 ---
 
