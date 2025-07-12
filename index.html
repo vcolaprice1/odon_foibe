@@ -5,93 +5,226 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Leaflet CSS -->
+    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-    }
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
 
-    #map {
-        height: 100vh;
-        width: 100%;
-    }
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
 
-    .map-title {
-        background-color: rgba(255,255,255,0.9);
-        padding: 10px;
-        font-size: 14px;
-        line-height: 1.4;
-        border-radius: 4px;
-        box-shadow: 0 0 4px rgba(0,0,0,0.2);
-    }
-</style>
+        .map-title {
+            background-color: rgba(255,255,255,0.9);
+            padding: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+            border-radius: 4px;
+            box-shadow: 0 0 4px rgba(0,0,0,0.2);
+        }
 
+        .leaflet-control-table {
+            background-color: rgba(255,255,255,0.95);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.3);
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 13px;
+            width: 300px;
+        }
+
+        .leaflet-control-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaflet-control-table th,
+        .leaflet-control-table td {
+            border: 1px solid #ccc;
+            padding: 4px 6px;
+            text-align: left;
+            width: 50%;
+        }
+
+        .toggle-table-btn {
+            margin-bottom: 8px;
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+        
+        #tableContainer {
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 8px;
+    width: 300px;
+}
+
+#dataTable {
+    border-collapse: collapse;
+    font-size: 12px;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#dataTable th, #dataTable td {
+    padding: 4px;
+    border: 1px solid #ccc;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#dataTable th:nth-child(1), #dataTable td:nth-child(1) {
+    width: 10%;
+}
+
+#dataTable th:nth-child(2), #dataTable td:nth-child(2),
+#dataTable th:nth-child(3), #dataTable td:nth-child(3) {
+    width: 45%;
+}
+
+    </style>
 </head>
 <body>
 
 <div id="map"></div>
 
 <script>
-    var map = L.map('map').setView([41.5, 12.5], 6.4);
+    var map = L.map('map', {
+        minZoom: 6.2
+    }).setView([41.9, 12.5], 6.2);
 
-    // Base map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '© OpenStreetMap contributors | Autore della ricerca: <a href="https://www.sissco.it/soci/colaprice-vincenzo/" target="_blank">Vincenzo Colaprice</a>'
+        attribution: '© OpenStreetMap contributors | Autore: <a href="https://www.sissco.it/soci/colaprice-vincenzo/" target="_blank">Vincenzo Colaprice</a>'
     }).addTo(map);
 
-    // Titolo fisso all'interno della mappa (in alto a destra)
+    // Box info fisso
     var info = L.control({ position: 'topright' });
     info.onAdd = function () {
         var div = L.DomUtil.create('div', 'map-title');
-        div.innerHTML = "<strong>Odonimi relativi alle foibe</strong><br>Comuni che ospitano vie dedicate ai massacri delle foibe in Italia.<br>Ultimo aggiornamento: 4 gennaio 2025. Fonte: Openstreetmap.<br>Clicca sui segnaposto per consultare gli indirizzi.";
+        div.innerHTML = "<strong>Odonimi relativi alle foibe</strong><br>Comuni con vie dedicate ai massacri delle foibe.<br>Ultimo aggiornamento: 4 gennaio 2025.";
         return div;
     };
     info.addTo(map);
 
-        // Punti delle vie
-fetch('data/vie.geojson')
-            .then(response => response.json())
-            .then(data => {
-                L.geoJSON(data, {
-                    pointToLayer: function (feature, latlng) {
-                        return L.circleMarker(latlng, {
-                            radius: 5,
-                            fillColor: "gray",
-                            color: "black",
-                            weight: 1,
-                            opacity: 1,
-                            fillOpacity: 0.8
-                        });
-                    },
-                    onEachFeature: function (feature, layer) {
-                        let comune = feature.properties.comune || "Comune non disponibile";
-                        let descrizione = feature.properties.display_na || "";
-                        layer.bindPopup("<strong>" + comune + "</strong><br>" + descrizione);
-                    }
+    // Controllo per mostrare/nascondere tabella
+    var tableControl = L.control({ position: 'bottomleft' });
+    tableControl.onAdd = function () {
+        var container = L.DomUtil.create('div', 'map-title');
+        container.innerHTML = `
+            <button id="toggleTable">Mostra/Nascondi lista odonimi</button>
+            <div id="tableContainer" style="display:none; max-height: 200px; overflow-y: auto; margin-top: 8px;">
+                <table id="dataTable" border="1" style="border-collapse: collapse; font-size: 12px; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Odonimo</th>
+                            <th>Comune</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        `;
+        return container;
+    };
+    tableControl.addTo(map);
+    // Impedisci lo scroll della mappa quando si scorre nella tabella
+L.DomEvent.disableScrollPropagation(document.getElementById('tableContainer'));
+L.DomEvent.disableClickPropagation(document.getElementById('tableContainer'));
+
+
+    document.addEventListener('click', function (e) {
+        if (e.target.id === 'toggleTable') {
+            const container = document.getElementById('tableContainer');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        }
+    });
+
+    // Carica regioni (sfondo)
+    fetch('data/regioni.geojson')
+        .then(res => res.json())
+        .then(data => {
+            L.geoJSON(data, {
+                style: {
+                    color: '#5e5e5e',
+                    weight: 1,
+                    fillOpacity: 0
+                },
+                interactive: false
             }).addTo(map);
-        })
-        .catch(err => console.error("Errore caricamento vie:", err));
-        
-        // Contorni regioni
-fetch('data/regioni.geojson')
-    .then(response => response.json())
-    .then(data => {
-        L.geoJSON(data, {
-            style: {
-                color: '#5e5e5e',
-                weight: 1,
-                fillOpacity: 0
-            },
-            interactive: false  // <-- soluzione!
-        }).addTo(map);
-    })
-    .catch(err => console.error("Errore caricamento regioni:", err));
+        });
+
+    // Punti vie + tabella
+    const markerMap = {};
+    fetch('data/vie.geojson')
+        .then(res => res.json())
+        .then(data => {
+            const sortedFeatures = data.features.sort((a, b) => {
+                const comA = a.properties.comune || '';
+                const comB = b.properties.comune || '';
+                return comA.localeCompare(comB);
+            });
+
+            sortedFeatures.forEach((feature, index) => {
+                const latlng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+                const marker = L.circleMarker(latlng, {
+                    radius: 5,
+                    fillColor: "gray",
+                    color: "black",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+
+                const comune = feature.properties.comune || "Comune non disponibile";
+                const nome = feature.properties.display_na || "—";
+                const popupContent = "<strong>" + comune + "</strong><br>" + nome;
+                marker.bindPopup(popupContent);
+                marker.addTo(map);
+
+                // Salva per interazione con tabella
+                markerMap[index] = marker;
+
+                // Aggiungi riga alla tabella
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td style="cursor:pointer;color:#007BFF;text-decoration:underline;" data-id="${index}">${nome}</td>
+                    <td style="cursor:pointer;color:#007BFF;text-decoration:underline;" data-id="${index}">${comune}</td>
+                `;
+                document.querySelector('#dataTable tbody').appendChild(row);
+            });
+
+            // Aggiungi listener alle celle cliccabili
+            document.querySelectorAll('[data-id]').forEach(el => {
+                el.addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+                    const marker = markerMap[id];
+                    if (marker) {
+                        map.setView(marker.getLatLng(), 13);
+                        marker.openPopup();
+                    }
+                });
+            });
+        });
 </script>
+
 </body>
 </html>
