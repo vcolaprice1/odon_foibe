@@ -35,6 +35,12 @@ La rilevazione è stata effettuata in data 4 gennaio 2025.
 
 ---
 
+## 🗺️ Come usare la mappa
+
+- Cliccando su ciascun punto puoi accedere al **nome dell’odonimo** e alla sua **collocazione**.
+- La mappa è navigabile anche attraverso la **tabella** in basso a sinistra.
+---
+
 ## 🗂️ Dataset
 
 Il file `vie.geojson` contiene:
@@ -45,12 +51,6 @@ Il file `vie.geojson` contiene:
 - coordinate geografiche.
 
 Le coordinate e gli indirizzi sono stati estratti da OpenStreetMap. Il dataset è stato reso disponibile e scaricabile in formato CSV su Zenodo 🔗 [https://doi.org/10.5281/zenodo.15647533](https://doi.org/10.5281/zenodo.15647533).
-
----
-
-## 🗺️ Come usare la mappa
-
-- Cliccando su ciascun punto puoi accedere al **nome dell’odonimo** e alla sua **collocazione**.
 
 ---
 
